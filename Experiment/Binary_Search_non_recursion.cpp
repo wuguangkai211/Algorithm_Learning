@@ -30,6 +30,7 @@ int BinarySearch(Type a[], const Type &x, int len)
     return -1; // 未找到 x
 }
 
+// 升序运算
 bool Int_Less(const int &a, const int &b)
 {
     return (a < b);
@@ -39,17 +40,29 @@ int main()
 {
     int a[] = {0, 2, 1, -8, -1, 0, 1, 3, 6, 7, 11};
     int len = sizeof(a) / sizeof(int);
+
+    // 使用排序算法对原始数据进行排序
     sort(a, a + len, Int_Less);
 
     for(int i = 0; i< len; i++)
     {
         printf("%d ", a[i]);
     }
+    printf("\n");
 
-    int ele = -8;
+    // 需要查找的元素
+    int ele = 0;
+
+    int location = BinarySearch(a, ele, len);
     
-    printf("\n%d\'s Location: %d.\n", ele, BinarySearch(a, ele, len));
-
+    if(location != -1)
+    {
+        printf("%d\'s Location: %d.\n", ele, location);
+    }
+    else
+    {
+        printf("Not found!\n");
+    }
 
     return 0;
 }

@@ -28,7 +28,7 @@ int main()
     {
         for (int j = 0; j <= sum; j++)
         {
-            if (j < a[i])
+            if (j < a[i])       // 该任务不能交给 a来做，只能交给 b来做
             {
                 dp[i][j] = dp[i - 1][j] + b[i];
             }
@@ -53,7 +53,7 @@ int main()
     int ans = inf;
     for (int j = 0; j <= sum; j++)
     {
-        int temp = dp[N][j] > j ? dp[N][j] : j;
+        int temp = (dp[N][j] > j) ? dp[N][j] : j;
         if (temp < ans)
         {
             ans = temp;
@@ -80,7 +80,7 @@ int main()
 
 /**
  * 思路：dp[i][j]表示在做第 i个作业a使用不小于 j时间时，b使用的时间
- * 当a在时间 j小于a[i]时，任务 i只能给b来做
+ * 当a在时间 j小于a[i]时，任务 i只能给 b来做
  * 当a在时间 j大于a[i]时，
  * 给a处理，a花费时间dp[i - 1][j-a[i - 1]]
  * 给b处理，b花费时间dp[i - 1][j] + b[i - 1]

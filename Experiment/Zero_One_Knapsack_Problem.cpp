@@ -6,8 +6,6 @@
 #include <iostream>
 using namespace std;
 
-const int MAX_NUM = 5;
-
 // 物品序号 i = 1 ~ n，重量 j = 0 ~ c
 
 // 写价值矩阵 m
@@ -22,6 +20,7 @@ void Knapsack(int *v, int *w, int c, int n, int **m)
     {
         m[n][j] = v[n];
     }
+
     for (int i = n - 1; i > 1; i--)
     {
         jMax = min(w[i], c);
@@ -33,7 +32,7 @@ void Knapsack(int *v, int *w, int c, int n, int **m)
         {
             m[i][j] = max(m[i + 1][j], m[i + 1][j - w[i]] + v[i]);
         }
-        m[1][c] = m[2][c]; // 矩阵第一行最后一列
+        // m[1][c] = m[2][c]; // 矩阵第一行最后一列
         if (c >= w[1])
         {
             m[1][c] = max(m[2][c], m[2][c - w[1]] + v[1]); // 此处 m[2][c] == m[1][c]
@@ -61,26 +60,34 @@ void Traceback(int **m, int *w, int c, int n, int *x)
 int main()
 {
     int n = 5, c = 10;
-    //int m[n+1][c+1];
-    int *w = (int*)malloc((n+1)* sizeof(int));
-    int *v = (int*)malloc((n+1)* sizeof(int));
+
+    int *w = (int *)malloc((n + 1) * sizeof(int));
+    int *v = (int *)malloc((n + 1) * sizeof(int));
     w[1] = 2, w[2] = 2, w[3] = 6, w[4] = 5, w[5] = 4;
     v[1] = 6, v[2] = 3, v[3] = 5, v[4] = 4, v[5] = 6;
 
-    int **m = (int**)malloc((n+1)* sizeof(int*));
-    for(int i = 0; i< c+1; i++)
+    // 为二级指针分配空间
+    int **m = (int **)malloc((n + 1) * sizeof(int *));
+    for (int i = 0; i < c + 1; i++)
     {
-        m[i] = (int*)malloc((c+1)* sizeof(int));
+        m[i] = (int *)malloc((c + 1) * sizeof(int));
     }
 
-    int *x = (int*)malloc((n+1)* sizeof(int));
+    // 解向量
+    int *x = (int *)malloc((n + 1) * sizeof(int));
+
+    // 主要部分
     Knapsack(v, w, c, n, m);
     Traceback(m, w, c, n, x);
 
-    for(int i = 1; i<= n; i++)
+    // 输出解向量
+    int sumv = 0;
+    for (int i = 1; i <= n; i++)
     {
+        sumv += x[i]* v[i];
         printf("%d ", x[i]);
     }
+    
 
     return 0;
 }

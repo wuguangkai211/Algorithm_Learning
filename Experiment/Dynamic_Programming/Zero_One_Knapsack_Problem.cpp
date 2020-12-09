@@ -87,6 +87,7 @@ int main()
         sumv += x[i]* v[i];
         printf("%d ", x[i]);
     }
+    printf("\n%d\n", sumv);
     
 
     return 0;

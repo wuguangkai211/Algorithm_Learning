@@ -1,13 +1,13 @@
 #include <cstdio>
-#include <stack>
-using std::stack;
+#include <vector>
+using std::vector;
 
 int main()
 {
-    int K = 0;       // 路途加油站总数
-    int M = 0;       // 汽车一次加油可以行驶的最大距离（单位：千米）
-    int dist[K + 1]; // 记录各相邻加油站（包括起始点、目的地）之间的距离
-    stack<int> pass; // 记录经过的加油站编号
+    int K = 0;        // 路途加油站总数
+    int M = 0;        // 汽车一次加油可以行驶的最大距离（单位：千米）
+    int dist[K + 1];  // 记录各相邻加油站（包括起始点、目的地）之间的距离
+    vector<int> pass; // 记录经过的加油站编号
 
     // 载入加油站总数、汽车信息
     scanf("%d%d", &K, &M);
@@ -18,25 +18,35 @@ int main()
     } // 载入距离信息，输入结束
 
     for (int i = 0; i < K + 1;) // 遍历距离数组
-    { // printf("i == %d.\n", i);
-        int sumt = 0, j = i;  // 计算最远距离
-        while (sumt < M && j < K+1) // 寻找距离最近且不可到达的加油站
+    {
+        int sumt = 0, j = i;          // 计算最远距离
+        while (sumt < M && j < K + 1) // 寻找距离最近且不可到达的加油站
         {
-            sumt += dist[j++];  // j: start from i to K
-            // printf("j == %d.\n", j);
-        }                       // j 为最近的且不能到达的加油站编号
-        printf("sumt == %d.\n", sumt);
-        if (j == K+1 && sumt <= M) // 从该点可以直达终点（到终点可以没有油）
-            break;              // 已经到达终点
+            sumt += dist[j++];       // j: start from i to K
+        }                            // j 为最近的且不能到达的加油站编号
+        if (j == K + 1 && sumt <= M) // 从该点可以直达终点（到终点可以没有油）
+            break;                   // 已经到达终点
         else
         {
-            i = j - 1;    // 下一次出发的地点
-            pass.push(i); // 记录该加油站的编号
+            i = j - 1;         // 下一次出发的地点
+            pass.push_back(i); // 记录该加油站的编号
         }
     }
 
-    // 输出加油时间
-    printf("%d\n", pass.size());
+    // 输出加油次数
+    int rnum = pass.size();
+    printf("Number of refueling: %d.\n", rnum);
+
+    // 输出加油点
+    printf("Refueling point(s): ");
+    for (int i = 0; i < rnum; i++)
+    {
+        if (i == 0)
+            printf("%d", pass[i]);
+        else
+            printf(" %d", pass[i]);
+    }
+    printf("\n");
 
     return 0;
 }

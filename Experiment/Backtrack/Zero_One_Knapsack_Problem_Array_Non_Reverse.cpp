@@ -134,7 +134,7 @@ void IterativeBackTrack()
 
 int main()
 {
-    printf("Begin!\n");
+    printf("START!\n");
     IterativeBackTrack();
     printf("END!\n");
     printf("The best solution is: \"");
@@ -142,7 +142,7 @@ int main()
     {
         printf("%2d", best_x[i]);
     }
-    printf(" \", which profit is %.2lf.\n", best_profit);
+    printf(" \", which profit is: %.2lf.\n", best_profit);
 
     return 0;
 }

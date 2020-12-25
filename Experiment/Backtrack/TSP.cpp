@@ -50,12 +50,11 @@ void BackTrack(int t)
             {
                 bestx[i] = x[i];
             }
-
             bestc = cc + Graph_Adj[x[vertex_num - 1]][x[vertex_num]] + Graph_Adj[x[vertex_num]][1];
         }
     }
     else
-    { // printf("----------\n");
+    {
         for (int i = t; i <= vertex_num; i++)
         {
             if (Graph_Adj[x[t - 1]][x[i]] != NOEDGE && (cc + Graph_Adj[x[t - 1]][x[i]] < bestc || bestc == NOEDGE))

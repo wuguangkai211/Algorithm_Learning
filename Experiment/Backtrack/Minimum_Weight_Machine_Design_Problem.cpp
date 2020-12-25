@@ -15,14 +15,8 @@ int cw = 0, cc = 0;
 int bestc = INF, bestw = INF;
 int ttx[MAX_UNUM + 2], bestx[MAX_UNUM + 2];
 
-void ReNew()
-{
-    bestc = cc, bestw = cw;
-    for (int i = 1; i <= n; i++)
-    {
-        bestx[i] = ttx[i];
-    }
-}
+// 更新最优信息
+void ReNew();
 
 // 约束函数
 bool Constraint()
@@ -51,20 +45,43 @@ void BackTrack(int t)
     {
         for (int i = 1; i <= m; i++)
         {
-            cw = cw + weight[t][i];
-            cc = cc + cost[t][i];
+            cw += weight[t][i];
+            cc += cost[t][i];
             ttx[t] = i;
             if (Constraint() && Bound())
             {
                 BackTrack(t + 1); // 进入下一层
             }
-            cw = cw - weight[t][i]; // 退回原状态
-            cc = cc - cost[t][i];
+            cw -= weight[t][i]; // 退回原状态
+            cc -= cost[t][i];
         }
     }
 }
 
+// 初始化
+void Init();
+
 int main()
+{
+    Init();
+    printf("START!\n");
+    BackTrack(1);
+    printf("END!\n");
+
+    printf("The best weight value is: %d.\n", bestw);
+    printf("The best cost value is: %d.\n", bestc);
+    printf("The best solution is: \"");
+    for (int i = 1; i <= n; i++)
+    {
+        printf("%2d", bestx[i]);
+    }
+    printf(" \".\n");
+
+    return 0;
+}
+
+// 初始化
+void Init()
 {
     scanf("%d%d%d", &n, &m, &d);
     for (int i = 1; i <= n; i++)
@@ -81,21 +98,16 @@ int main()
             scanf("%d", &weight[i][j]);
         }
     } // 输入各部件的供货商重量信息
+}
 
-    printf("START!\n");
-    BackTrack(1);
-    printf("END!\n");
-
-    printf("The best weight value is: %d.\n", bestw);
-    printf("The best cost value is: %d.\n", bestc);
-    printf("The best solution is: \"");
+// 更新最优信息
+void ReNew()
+{
+    bestc = cc, bestw = cw;
     for (int i = 1; i <= n; i++)
     {
-        printf("%2d", bestx[i]);
+        bestx[i] = ttx[i];
     }
-    printf(" \".\n");
-
-    return 0;
 }
 
 /*

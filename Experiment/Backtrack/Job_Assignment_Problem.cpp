@@ -75,6 +75,12 @@ int main()
     BackTrack(1);
 
     printf("The best value is: %d.\n", bestc);
+    printf("The best solution is: \"");
+    for(int i = 1; i<= pnum; i++)
+    {
+        printf("%2d", bestx[i]);
+    }
+    printf(" \".\n");
 
     return 0;
 }

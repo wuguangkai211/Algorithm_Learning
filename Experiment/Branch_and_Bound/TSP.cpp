@@ -110,7 +110,7 @@ int Traveling::Solve(int bestx[])
                     {
                         std::swap(E.x[E.s + 1], E.x[i]);        // 交换，形成新排列
                         MinHeapNode N;
-                        N.x = new int[vertex_num];
+                        N.x = new int[MAX_VNUM+2];              // 注意这里的分配大小需要与上面首节点的一致
                         for (int j = 1; j <= vertex_num; j++)
                         {
                             N.x[j] = E.x[j];

@@ -12,11 +12,11 @@ const int NoEdge = INF; // 图 G的无边标志
 class Traveling
 {
 public:
-    int vertex_num;            // 图 G的顶点数
-    int edge_num;              // 图 G的边数
-    int a[MAX_VNUM+4][MAX_VNUM+4]; // 图 G的邻接矩阵
-    int cc;                    // 当前费用
-    int bestc;                 // 当前最小费用
+    int vertex_num;                    // 图 G的顶点数
+    int edge_num;                      // 图 G的边数
+    int a[MAX_VNUM + 4][MAX_VNUM + 4]; // 图 G的邻接矩阵
+    int cc;                            // 当前费用
+    int bestc;                         // 当前最小费用
 
 public:
     // TSP 的分支限界式解决算法
@@ -41,14 +41,14 @@ typedef struct MinHeapNode
 // TSP 的分支限界式解决算法
 int Traveling::Solve(int bestx[])
 {
-    priority_queue< MinHeapNode, vector<MinHeapNode>, greater<MinHeapNode> > H; // 建立小顶堆
+    priority_queue<MinHeapNode, vector<MinHeapNode>, greater<MinHeapNode>> H; // 建立小顶堆
 
     // 求最小出边费用和，计算下界时用
-    int *MinOut = new int[MAX_VNUM+4];     // MinOut[i] = 顶点 i的最小费用
-    int MinSum = 0; // 最小出边费用和
+    int *MinOut = new int[MAX_VNUM + 4]; // MinOut[i] = 顶点 i的最小费用
+    int MinSum = 0;                      // 最小出边费用和
     for (int i = 1; i <= vertex_num; i++)
     {
-        int Min = INF;          // 寻找该节点的最小出边
+        int Min = INF; // 寻找该节点的最小出边
         for (int j = 1; j <= vertex_num; j++)
         {
             if (a[i][j] < Min)
@@ -58,16 +58,16 @@ int Traveling::Solve(int bestx[])
         }
         if (Min == INF) // 该节点是一个孤立点，则问题无解（整个图中不存在连接所有顶点的一条回路）
         {
-            return INF;         // 无解时的花费定义为无穷大
+            return INF; // 无解时的花费定义为无穷大
         }
-        MinOut[i] = Min;                // 该点的最小出边费用为：Min
-        MinSum += Min;              // 计入最小出边费用和
+        MinOut[i] = Min; // 该点的最小出边费用为：Min
+        MinSum += Min;   // 计入最小出边费用和
     }
 
     // 初始化
-    MinHeapNode E;  // 待扩展结点，一开始是根节点
-    E.x = new int[MAX_VNUM+2];
-    for (int i = 1; i <= vertex_num; i++)           // 生成初始排列
+    MinHeapNode E; // 待扩展结点，一开始是根节点
+    E.x = new int[MAX_VNUM + 2];
+    for (int i = 1; i <= vertex_num; i++) // 生成初始排列
     {
         E.x[i] = i;
     }
@@ -75,7 +75,7 @@ int Traveling::Solve(int bestx[])
     E.cc = 0;
     E.lcost = 0;
     E.rcost = MinSum;
-    bestc = NoEdge;         // 尚无最优值
+    bestc = NoEdge; // 尚无最优值
 
     // 搜索排列空间树
     while (E.s < vertex_num) // 当是叶结点出队时，代表算法应当结束
@@ -101,16 +101,16 @@ int Traveling::Solve(int bestx[])
         {
             for (int i = E.s + 1; i <= vertex_num; i++)
             {
-                if (a[E.x[E.s]][E.x[i]] != NoEdge)          // 可达
+                if (a[E.x[E.s]][E.x[i]] != NoEdge) // 可达
                 {
                     int cc = E.cc + a[E.x[E.s]][E.x[i]]; // 可行儿子节点
                     int rcost = E.rcost - MinOut[E.x[E.s]];
                     int b = cc + rcost;               // 下界
                     if (b < bestc || bestc == NoEdge) // 小于，说明子树可能含有最优解，结点插入最小堆
                     {
-                        std::swap(E.x[E.s + 1], E.x[i]);        // 交换，形成新排列
+                        std::swap(E.x[E.s + 1], E.x[i]); // 交换，形成新排列
                         MinHeapNode N;
-                        N.x = new int[MAX_VNUM+2];              // 注意这里的分配大小需要与上面首节点的一致
+                        N.x = new int[MAX_VNUM + 2]; // 注意这里的分配大小需要与上面首节点的一致
                         for (int j = 1; j <= vertex_num; j++)
                         {
                             N.x[j] = E.x[j];
@@ -141,7 +141,7 @@ int Traveling::Solve(int bestx[])
     for (int i = 1; i <= vertex_num; i++)
     {
         bestx[i] = E.x[i];
-    }   // 返回最优解
+    }         // 返回最优解
     while (1) // 释放剩余空间
     {
         delete[] E.x;
@@ -155,7 +155,7 @@ int Traveling::Solve(int bestx[])
             break;
         }
     }
-    return bestc;               // 返回最优值
+    return bestc; // 返回最优值
 }
 
 void InitGraph(Traveling &tl)
@@ -178,22 +178,21 @@ void InitGraph(Traveling &tl)
 
 int main()
 {
-    int bestx[MAX_VNUM+4];
+    int bestx[MAX_VNUM + 4];
     Traveling tl;
     InitGraph(tl);
     tl.Solve(bestx);
     printf("The best solution is:\"");
-    for(int i = 1; i<= tl.vertex_num; i++)
+    for (int i = 1; i <= tl.vertex_num; i++)
     {
         printf("%2d", bestx[i]);
     }
-    printf("%2d", 1);               // 回到起始节点
+    printf("%2d", 1); // 回到起始节点
     printf(" \".\n");
     printf("Best value is: %d", tl.bestc);
 
     return 0;
 }
-
 
 /*
 4 5
